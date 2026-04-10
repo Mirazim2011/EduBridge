@@ -1,0 +1,42 @@
+/* Custom Info Toast Styles */
+.custom-toast-info {
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+  padding: 16px 24px 16px 16px !important;
+  display: flex !important;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+/* Yopish tugmasi (X) */
+.custom-toast-info .toast-close {
+  color: #9CA3AF !important;
+  opacity: 1 !important;
+  font-size: 18px !important;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  line-height: 1;
+  background: transparent;
+}
+
+/* Pastdagi progress bar (vaqt chizig'i) */
+.custom-toast-info::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: #3B82F6; /* Info uchun ko'k rang */
+  /* Animatsiya vaqti JS dagi duration (3000ms) bilan bir xil bo'lishi kerak */
+  animation: toastProgress 3s linear forwards; 
+}
+
+@keyframes toastProgress {
+  0% { width: 100%; }
+  100% { width: 0%; }
+}

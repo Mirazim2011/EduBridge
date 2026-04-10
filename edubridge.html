@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduBridge – O'quvchilarni To'g'ri O'qituvchilar bilan bog'laymiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="toastify.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<style>
+  :root {
+    --navy: #1B2D4F;
+    --navy-dark: #0f1d33;
+    --gold: #F5A623;
+    --gold-light: #FDD68A;
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --gray: #64748B;
+    --gray-light: #F8FAFC;
+    --border: #E2E8F0;
+    --white: #ffffff;
+    --red-soft: #FEF2F2;
+    --red-border: #FCA5A5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: var(--navy-dark); }
+
+  /* ── CONTAINER ── */
+  .container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: #fff;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 8px rgba(27,45,79,0.06);
+  }
+  .nav-inner {
+    display: flex; align-items: center;
+    justify-content: space-between; height: auto; gap: 16px;
+  }
+  .logo-img { height: 44px; width: auto; display: block; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 14px; color: var(--gray); font-weight: 600; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .lang-switcher { display: flex; gap: 4px; background: var(--gray-light); border-radius: 50px; padding: 4px; }
+  .lang-btn {
+    background: transparent; border: none; padding: 5px 10px; border-radius: 50px;
+    font-size: 12px; font-weight: 700; cursor: pointer; color: var(--gray);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .lang-btn.active { background: var(--navy); color: #fff; }
+  .nav-cta {
+    background: var(--navy); color: #fff; border: none;
+    padding: 10px 20px; border-radius: 50px; font-size: 14px; font-weight: 700;
+    cursor: pointer; text-decoration: none; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .nav-cta:hover { background: var(--blue); transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; transition: all 0.3s; }
+
+  /* ── MOBILE MENU ── */
+  .mobile-menu {
+    display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.98); z-index: 190; padding: 32px 24px;
+    flex-direction: column; gap: 8px; overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a, .mobile-menu button.mobile-link {
+    text-decoration: none; font-size: 18px; font-weight: 700; color: var(--navy);
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+    background: none; border-left: none; border-right: none; border-top: none;
+    text-align: left; cursor: pointer; font-family: inherit;
+  }
+  .mobile-lang { display: flex; gap: 8px; padding: 16px 0; }
+  .mobile-lang .lang-btn { font-size: 14px; padding: 8px 16px; }
+  .mobile-lang .lang-btn.active { background: var(--navy); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(150deg, #EFF6FF 0%, #FFF7ED 50%, #fff 100%);
+    padding: 80px 0 72px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -60px; right: -80px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #FFF3CD; color: #92400E; border: 1px solid var(--gold-light);
+    font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 50px;
+    margin-bottom: 28px; letter-spacing: 0.04em;
+  }
+  .hero h1 {
+    font-size: 54px; font-weight: 800; line-height: 1.15;
+    max-width: 740px; color: var(--navy-dark); margin-bottom: 22px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub { font-size: 18px; color: var(--gray); max-width: 540px; line-height: 1.75; margin-bottom: 40px; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: var(--navy); color: #fff; border: none;
+    padding: 15px 30px; border-radius: 50px; font-size: 15px; font-weight: 700;
+    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s; box-shadow: 0 4px 16px rgba(27,45,79,0.25);
+  }
+  .btn-primary:hover { background: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.3); }
+  .btn-outline {
+    background: #fff; color: var(--navy); border: 2px solid var(--navy);
+    padding: 13px 28px; border-radius: 50px; font-size: 15px; font-weight: 700;
+    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+  .btn-white {
+    background: #fff; color: var(--navy); border: none; padding: 16px 34px; border-radius: 50px;
+    font-size: 16px; font-weight: 800; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+  .btn-full { width: 100%; justify-content: center; }
+
+  /* ── HERO VISUAL ── */
+  .hero-visual {
+    width: 100%; max-width: 640px; background: #fff;
+    border-radius: 24px; border: 1px solid var(--border);
+    padding: 32px 28px; box-shadow: 0 12px 48px rgba(27,45,79,0.1);
+  }
+  .flow { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .flow-node {
+    background: var(--blue-light); border: 1px solid #BFDBFE;
+    border-radius: 16px; padding: 18px 22px; text-align: center; min-width: 106px;
+  }
+  .flow-node .fn-icon { font-size: 28px; margin-bottom: 8px; }
+  .flow-node p { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .flow-node.center-node { background: linear-gradient(135deg,var(--navy),var(--blue)); border-color: transparent; }
+  .flow-node.center-node p { color: #fff; }
+  .flow-arrow { font-size: 20px; color: var(--gold); font-weight: 800; }
+  .hero-note { text-align: center; font-size: 12px; color: #aaa; margin-top: 20px; }
+
+  /* ── STATS ── */
+  .stats { background: var(--navy); padding: 48px 0; }
+  .stats-grid { display: flex; gap: 0; flex-wrap: wrap; justify-content: center; }
+  .stat-item { flex: 1 1 180px; text-align: center; padding: 24px 20px; border-right: 1px solid rgba(255,255,255,0.1); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-size: 40px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 6px; font-weight: 500; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 80px 0; }
+  .section-label {
+    font-size: 12px; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 12px;
+  }
+  .section-title { font-size: 38px; font-weight: 800; color: var(--navy-dark); margin-bottom: 16px; line-height: 1.2; }
+  .section-desc { font-size: 16px; color: var(--gray); max-width: 560px; line-height: 1.75; margin-bottom: 40px; }
+
+  /* ── PROBLEM ── */
+  .problem { background: #FFFBF5; }
+  .problem-cards { display: flex; gap: 20px; flex-wrap: wrap; }
+  .prob-card {
+    flex: 1 1 240px; background: #fff; border: 1px solid var(--border);
+    border-top: 4px solid #FC8181; border-radius: 18px; padding: 28px; transition: transform 0.2s;
+  }
+  .prob-card:hover { transform: translateY(-4px); }
+  .prob-card .pc-icon { font-size: 28px; margin-bottom: 14px; }
+  .prob-card h4 { font-size: 16px; font-weight: 700; color: var(--navy-dark); margin-bottom: 8px; }
+  .prob-card p { font-size: 14px; color: var(--gray); line-height: 1.65; }
+
+  /* ── SOLUTION ── */
+  .solution { background: var(--blue-light); }
+  .sol-grid { display: flex; gap: 56px; align-items: center; flex-wrap: wrap; }
+  .sol-left { flex: 1 1 340px; }
+  .sol-right {
+  flex: 1 1 340px;
+  width: 100%;
+  min-width: 0; /* MUHIM */
+}
+  .sol-points { display: flex; flex-direction: column; gap: 22px; }
+  .sol-item { display: flex; gap: 16px; align-items: flex-start; }
+  .sol-dot {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    background: var(--navy); display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #fff; font-weight: 800;
+  }
+  .sol-text h4 { font-size: 16px; font-weight: 700; color: var(--navy-dark); margin-bottom: 4px; }
+  .sol-text p { font-size: 14px; color: var(--gray); line-height: 1.65; }
+
+  /* ── MOCK UI ── */
+  .mock-ui { background: #fff; max-width: 100%; width: 100%; border-radius: 20px; border: 1px solid var(--border); padding: 24px; box-shadow: 0 6px 28px rgba(27,45,79,0.08); }
+  .mock-top { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .mock-dots span { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .mock-title { font-size: 13px; color: #aaa; font-weight: 600; }
+  .mock-search { display: flex; align-items: center; gap: 8px; background: var(--blue-light); border-radius: 10px; padding: 10px 16px; font-size: 14px; color: #888; margin-bottom: 16px; }
+  .mock-card { display: flex; align-items: center; gap: 12px; background: var(--gray-light); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+  .mock-avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #fff; }
+  .mock-card-text h5 { font-size: 13px; font-weight: 700; color: var(--navy-dark); }
+  .mock-card-text p { font-size: 12px; color: #999; }
+  .mock-tag { display: inline-block; background: #DBEAFE; color: var(--blue); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; margin-top: 4px; }
+  @media (max-width: 768px) {
+  .sol-grid {
+    flex-direction: column;
+  }
+
+  .sol-right,
+  .sol-left {
+    width: 100%;
+  }
+
+  .mock-ui {
+    width: 100%;
+  }
+}
+
+  /* ── HOW IT WORKS ── */
+  .how { background: #fff; }
+  .how-head { text-align: center; margin-bottom: 56px; }
+  .how-head .section-desc { margin: 0 auto; }
+  .steps { display: flex; gap: 20px; flex-wrap: wrap; }
+  .step {
+    flex: 1 1 200px; background: var(--gray-light); border-radius: 20px;
+    padding: 30px 22px; text-align: center; border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step:hover { transform: translateY(-6px); box-shadow: 0 8px 30px rgba(27,45,79,0.1); }
+  .step-icon { font-size: 28px; margin-bottom: 14px; }
+  .step-num {
+    width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 18px;
+    background: var(--navy); display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+  }
+  .step h4 { font-size: 16px; font-weight: 700; color: var(--navy-dark); margin-bottom: 8px; }
+  .step p { font-size: 13px; color: var(--gray); line-height: 1.65; }
+
+  /* ── FEATURES ── */
+  .features { background: #FAFBFF; }
+  .feat-grid { display: flex; flex-wrap: wrap; gap: 18px; }
+  .feat-card {
+    flex: 1 1 290px; display: flex; gap: 16px; align-items: flex-start;
+    background: #fff; border-radius: 18px; padding: 26px;
+    border: 1px solid var(--border); transition: all 0.2s;
+  }
+  .feat-card:hover { box-shadow: 0 6px 24px rgba(27,45,79,0.1); transform: translateY(-2px); }
+  .feat-icon { width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .feat-card h4 { font-size: 15px; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px; }
+  .feat-card p { font-size: 13px; color: var(--gray); line-height: 1.65; }
+  .badge-soon { display: inline-block; background: #FEF3C7; color: #92400E; font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 20px; margin-top: 6px; }
+
+  /* ── CTA SECTION ── */
+  .cta-section { background: linear-gradient(135deg, var(--navy) 0%, #1e40af 60%, #1e3a8a 100%); padding: 88px 0; text-align: center; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%); }
+  .cta-section h2 { font-size: 46px; font-weight: 800; color: #fff; margin-bottom: 18px; line-height: 1.2; }
+  .cta-section p { font-size: 18px; color: rgba(255,255,255,0.82); max-width: 480px; margin: 0 auto 44px; line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy-dark); padding: 0; }
+  .footer-top { padding: 64px 0 48px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .footer-grid { display: flex; gap: 48px; flex-wrap: wrap; }
+  .footer-brand { flex: 1 1 280px; }
+  .footer-logo { height: 42px; width: auto; filter: brightness(0) invert(1); margin-bottom: 16px; }
+  .footer-tagline { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 24px; max-width: 280px; }
+  .footer-social { display: flex; gap: 10px; }
+  .social-btn {
+    width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center; text-decoration: none;
+    transition: background 0.2s; color: rgba(255,255,255,0.7); font-size: 16px;
+  }
+  .social-btn:hover { background: var(--blue); color: #fff; }
+  .footer-col { flex: 1 1 160px; }
+  .footer-col h5 { font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul li a { text-decoration: none; font-size: 14px; color: rgba(255,255,255,0.7); transition: color 0.2s; }
+  .footer-col ul li a:hover { color: #fff; }
+
+  /* ── CONTACT IN FOOTER ── */
+  .footer-contact { flex: 1 1 300px; }
+  .footer-contact h5 { font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; background: rgba(255,255,255,0.06);
+    border-radius: 12px; margin-bottom: 10px; text-decoration: none;
+    transition: background 0.2s; color: rgba(255,255,255,0.8); font-size: 14px; font-weight: 500;
+  }
+  .contact-item:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .contact-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+
+  /* ── FOOTER BASE ── */
+.footer {
+  background: linear-gradient(180deg, #0f172a, #020617);
+  color: #fff;
+  padding-top: 64px;
+}
+
+/* GRID */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* BRAND */
+.footer-logo {
+  height: 42px;
+  margin-bottom: 16px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 260px;
+}
+
+/* SOCIAL */
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.social-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* COL */
+.footer-col h5,
+.footer-contact h5 {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-col a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+/* CONTACT */
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.8);
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.contact-item:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  text-align: center;
+  padding: 24px 0;
+  margin-top: 48px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.95);
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-icon {
+  font-size: 16px;
+}
+
+#toast-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .toast {
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, 20px);
+  }
+
+  .toast.show {
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ── RESPONSIVE ── */
+
+/* TABLET */
+@media (max-width: 992px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-tagline {
+    margin: 0 auto 20px;
+  }
+
+  .contact-item {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .footer-col {
+    display: none;
+  }
+  
+}
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 38px; }
+    .section-title { font-size: 30px; }
+    .cta-section h2 { font-size: 34px; }
+    .sol-grid { flex-direction: column; }
+    .stat-item { flex: 1 1 140px; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .hero { padding: 52px 0 44px; }
+    .hero h1 { font-size: 30px; }
+    .hero-sub { font-size: 15px; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .hero-btns a { width: 100%; max-width: 320px; justify-content: center; }
+    .section-title { font-size: 26px; }
+    .cta-section h2 { font-size: 26px; }
+    .cta-section p { font-size: 15px; }
+    .stats-grid { flex-wrap: wrap; }
+    .stat-item { flex: 1 1 44%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .footer-grid { flex-direction: column; gap: 36px; }
+    .form-grid { flex-direction: column; }
+    .footer-bottom-inner { flex-direction: column; align-items: flex-start; }
+    .flow { gap: 6px; }
+    .flow-node { min-width: 80px; padding: 12px 14px; }
+    .flow-arrow { font-size: 14px; }
+    .footer-contact h5 {
+    display: none;
+  }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 26px; }
+    .problem-cards, .steps { flex-direction: column; }
+    .prob-card, .step { flex: 1 1 100%; width: 100%; }
+    .feat-card { flex: 1 1 100%; width: 100%; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-inner > * { animation: fadeUp 0.6s ease both; }
+  .hero-inner > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-inner > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-inner > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-inner > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-inner > *:nth-child(5) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE DATA -->
+<script>
+const LANGS = {
+  uz: {
+    nav_problem: "Muammo",
+    nav_solution: "Yechim",
+    nav_how: "Qanday ishlaydi",
+    nav_contact: "Aloqa",
+    nav_cta: "Telegramda boshlash",
+    hero_badge: "MVP • Telegram orqali bepul sinab ko'ring",
+    hero_h1: "O'quvchilarni <span>To'g'ri O'qituvchilar</span> va Resurslar bilan Bog'laymiz",
+    hero_sub: "Bugungi ta'lim o'nlab platformalarga tarqalgan. To'g'ri o'qituvchi yoki ishonchli resurs topish ikkinchi ish bo'lmasligi kerak.",
+    hero_btn1: "Telegramda boshlash",
+    hero_btn2: "MVP sinab ko'rish →",
+    hero_note: "Bitta platforma · Barcha ta'lim ehtiyojlaringiz · Tartibsizliksiz",
+    stat1_num: "500+", stat1_label: "Faol o'quvchilar",
+    stat2_num: "120+", stat2_label: "Sertifikatlangan o'qituvchilar",
+    stat3_num: "4.9★", stat3_label: "O'rtacha reyting",
+    stat4_num: "95%", stat4_label: "Qoniqish darajasi",
+    prob_label: "Muammo",
+    prob_title: "Ta'lim buzilgan va tarqoq",
+    prob_desc: "O'quvchilar to'g'ri o'qituvchilar va ishonchli materiallarni topishda qiynaladi. Hamma narsa turli platformalarga tarqalgan — bu o'rganishni samarasiz va charchatuvchi qiladi.",
+    prob1_h: "O'qituvchi topish qiyin",
+    prob1_p: "Sizning maxsus ta'lim ehtiyojlaringizga mos malakali murabbiylarni topish uchun markaziy joy yo'q.",
+    prob2_h: "Tarqoq resurslar",
+    prob2_p: "Sifatli materiallar o'nlab platformalarda tarqalgan — kuratsiya yo'q, ishonch signallari yo'q.",
+    prob3_h: "Behuda sarf etilgan vaqt",
+    prob3_p: "O'quvchilar o'rganishdan ko'ra ko'proq vaqtni qidirishga sarflaydi. Bu noto'g'ri.",
+    sol_label: "Bizning Yechimimiz",
+    sol_title: "Hamma narsa bir joyda",
+    sol_desc: "EduBridge o'quvchilarni o'qituvchilar va ishonchli o'quv resurslari bilan bitta strukturalangan oqimda bog'laydi.",
+    sol1_h: "Yagona platforma",
+    sol1_p: "O'quvchilar va o'qituvchilar ilovalarni almashtirmasdan muammosiz bog'lanadi.",
+    sol2_h: "Tanlangan resurslar",
+    sol2_p: "Faqat ishonchli, tekshirilgan o'quv materiallari o'tadi.",
+    sol3_h: "Istalgan joydan foydalanish",
+    sol3_p: "Hoziroq Telegram botimiz orqali boshlang — ilova o'rnatish shart emas.",
+    how_label: "Qanday ishlaydi",
+    how_title: "Aqlliroq o'rganishga to'rt qadam",
+    how_desc: "Oddiy, tez va samarali — savoldan daqiqalar ichida o'rganishga.",
+    step1_h: "Mavzu kiriting",
+    step1_p: "EduBridge-ga nima o'rganmoqchilgingizni ayting — istalgan fan, istalgan daraja.",
+    step2_h: "Murabbiy toping",
+    step2_p: "EduBridge sizni maqsadingiz uchun to'g'ri o'qituvchi bilan moslashtiradi.",
+    step3_h: "Resurslar oling",
+    step3_p: "Murabbiy topilishi bilan birga tanlangan, ishonchli materiallar oling.",
+    step4_h: "O'rganishni boshlang",
+    step4_p: "Hamma narsa bitta oddiy oqimda — vkladkalarni almashtirishsiz.",
+    feat_label: "Xususiyatlar",
+    feat_title: "O'quvchilar qanday o'rganishini hisobga olib qurilgan",
+    feat1_h: "Darhol o'qituvchi bilan aloqa",
+    feat1_p: "Kunlar emas, soniyalarda mavjud murabbiylar bilan bog'laning.",
+    feat2_h: "Ishonchli o'quv resurslari",
+    feat2_p: "Tekshirilgan, yuqori sifatli materiallarning tanlangan kutubxonasiga kiring.",
+    feat3_h: "Toza, oddiy interfeys",
+    feat3_p: "Chalg'itmasiz dizayn, shuning uchun navigatsiya emas, o'rganishga e'tibor qarating.",
+    feat4_h: "Telegram bot MVP",
+    feat4_p: "Darhol boshlang — yuklab olish yo'q, ro'yxatdan o'tish to'siqlari yo'q.",
+    feat5_h: "AI aqlli takliflar",
+    feat5_p: "O'rganish uslubingizga asoslangan shaxsiy tavsiyalar.",
+    feat6_h: "Ko'p tilli qo'llab-quvvatlash",
+    feat6_p: "Istalgan tilda o'quvchilar uchun mo'ljallangan.",
+    cta_title: "Bugun aqlliroq o'rganishni boshlang",
+    cta_sub: "EduBridge-ga qo'shiling va o'qituvchilar va resurslar bilan bog'lanishning yangi usulini Telegram ichida his eting.",
+    cta_btn: "Telegramda boshlash",
+    footer_tagline: "O'quvchilarni to'g'ri o'qituvchilar va resurslar bilan bog'laymiz.",
+    footer_platform: "Platforma",
+    footer_link_home: "Bosh sahifa",
+    footer_link_features: "Xususiyatlar",
+    footer_link_how: "Qanday ishlaydi",
+    footer_link_pricing: "Narxlar",
+    footer_company: "Kompaniya",
+    footer_link_about: "Biz haqimizda",
+    footer_link_blog: "Blog",
+    footer_link_careers: "Ish o'rinlari",
+    footer_link_press: "Matbuot",
+    footer_contact_title: "Aloqa",
+    contact_form_title: "Bizga xabar yuboring",
+    contact_name_label: "Ismingiz",
+    contact_name_ph: "Masalan: Jasur Toshmatov",
+    contact_email_label: "Email",
+    contact_email_ph: "siz@misol.com",
+    contact_role_label: "Men ...",
+    contact_role1: "O'rganmoqchi bo'lgan o'quvchi",
+    contact_role2: "O'qituvchi / Murabbiy",
+    contact_role3: "Hissa qo'shishni istagan dasturchi",
+    contact_role4: "Potentsial hamkor / investor",
+    contact_role5: "Faqat qiziq",
+    contact_msg_label: "Xabar",
+    contact_msg_ph: "Fikrlaringizni aytib bering...",
+    contact_send: "Xabar yuborish →",
+    form_info_h: "Birgalikda quraylik",
+    form_info_p: "Biz kichik jamoa sifatida mazmunli narsa yaratmoqdamiz. Hissa qo'shmoqchi bo'lgan dasturchi, viziyani ko'rgan hamkor yoki fikr-mulohaza bildiruvchi foydalanuvchi bo'lsangiz — sizdan eshitishni xohlaymiz.",
+    footer_copy: "© 2024 EduBridge. Barcha huquqlar himoyalangan.",
+    footer_privacy: "Maxfiylik",
+    footer_terms: "Shartlar",
+    alert_future: "Bu kabi funksiya kelajakda qo'shiladi"
+  },
+  ru: {
+    nav_problem: "Проблема",
+    nav_solution: "Решение",
+    nav_how: "Как работает",
+    nav_contact: "Контакты",
+    nav_cta: "Начать в Telegram",
+    hero_badge: "MVP • Попробуйте бесплатно в Telegram",
+    hero_h1: "Связываем студентов с <span>Правильными Учителями</span> и Ресурсами",
+    hero_sub: "Сегодняшнее обучение разбросано по десяткам платформ. Поиск подходящего учителя или надёжного ресурса не должен быть второй работой.",
+    hero_btn1: "Начать в Telegram",
+    hero_btn2: "Попробовать MVP →",
+    hero_note: "Одна платформа · Все ваши учебные нужды · Без хаоса",
+    stat1_num: "500+", stat1_label: "Активных студентов",
+    stat2_num: "120+", stat2_label: "Сертифицированных учителей",
+    stat3_num: "4.9★", stat3_label: "Средний рейтинг",
+    stat4_num: "95%", stat4_label: "Уровень удовлетворённости",
+    prob_label: "Проблема",
+    prob_title: "Обучение сломано и разрознено",
+    prob_desc: "Студентам сложно найти правильных учителей и надёжные материалы. Всё разбросано по разным платформам, что делает обучение неэффективным и утомительным.",
+    prob1_h: "Трудно найти учителей",
+    prob1_p: "Нет центрального места для поиска квалифицированных наставников под ваши конкретные нужды.",
+    prob2_h: "Разрозненные ресурсы",
+    prob2_p: "Качественные материалы разбросаны по десяткам платформ — нет курирования, нет сигналов доверия.",
+    prob3_h: "Потеря времени",
+    prob3_p: "Студенты тратят больше времени на поиск, чем на учёбу. Это неправильно.",
+    sol_label: "Наше Решение",
+    sol_title: "Всё в одном месте",
+    sol_desc: "EduBridge соединяет студентов с учителями и проверенными учебными ресурсами в одном структурированном потоке.",
+    sol1_h: "Единая платформа",
+    sol1_p: "Студенты и учителя подключаются без смены приложений.",
+    sol2_h: "Отобранные ресурсы",
+    sol2_p: "Только проверенные, качественные учебные материалы.",
+    sol3_h: "Доступно везде",
+    sol3_p: "Начните прямо сейчас через наш Telegram-бот — установка не нужна.",
+    how_label: "Как работает",
+    how_title: "Четыре шага к умному обучению",
+    how_desc: "Просто, быстро и эффективно — от вопроса до обучения за минуты.",
+    step1_h: "Введите тему",
+    step1_p: "Скажите EduBridge, чему хотите научиться — любой предмет, любой уровень.",
+    step2_h: "Найдите наставника",
+    step2_p: "EduBridge подберёт подходящего учителя для вашей цели.",
+    step3_h: "Получите ресурсы",
+    step3_p: "Получайте подобранные, проверенные материалы вместе с вашим наставником.",
+    step4_h: "Начните учиться",
+    step4_p: "Всё в одном простом потоке — без переключения вкладок.",
+    feat_label: "Возможности",
+    feat_title: "Создано для того, как студенты учатся",
+    feat1_h: "Мгновенное подключение к учителю",
+    feat1_p: "Связывайтесь с доступными наставниками за секунды, не дни.",
+    feat2_h: "Проверенные учебные ресурсы",
+    feat2_p: "Доступ к отобранной библиотеке проверенных, высококачественных материалов.",
+    feat3_h: "Чистый, простой интерфейс",
+    feat3_p: "Дизайн без отвлечений, чтобы вы сосредоточились на учёбе.",
+    feat4_h: "Telegram-бот MVP",
+    feat4_p: "Начните немедленно — без загрузки и регистрации.",
+    feat5_h: "ИИ-умные предложения",
+    feat5_p: "Персонализированные рекомендации на основе вашего стиля обучения.",
+    feat6_h: "Многоязычная поддержка",
+    feat6_p: "Разработано для учащихся повсюду, независимо от языка.",
+    cta_title: "Начните умнее учиться сегодня",
+    cta_sub: "Присоединяйтесь к EduBridge и ощутите лучший способ связи с учителями и ресурсами — прямо в Telegram.",
+    cta_btn: "Начать в Telegram",
+    footer_tagline: "Связываем студентов с правильными учителями и ресурсами.",
+    footer_platform: "Платформа",
+    footer_link_home: "Главная",
+    footer_link_features: "Возможности",
+    footer_link_how: "Как работает",
+    footer_link_pricing: "Цены",
+    footer_company: "Компания",
+    footer_link_about: "О нас",
+    footer_link_blog: "Блог",
+    footer_link_careers: "Карьера",
+    footer_link_press: "Пресса",
+    footer_contact_title: "Контакты",
+    contact_form_title: "Отправьте нам сообщение",
+    contact_name_label: "Ваше имя",
+    contact_name_ph: "Напр. Жасур Тошматов",
+    contact_email_label: "Email",
+    contact_email_ph: "вы@пример.com",
+    contact_role_label: "Я...",
+    contact_role1: "Студент, желающий учиться",
+    contact_role2: "Учитель / Наставник",
+    contact_role3: "Разработчик, желающий участвовать",
+    contact_role4: "Потенциальный партнёр / инвестор",
+    contact_role5: "Просто любопытный",
+    contact_msg_label: "Сообщение",
+    contact_msg_ph: "Расскажите нам, что у вас на уме...",
+    contact_send: "Отправить сообщение →",
+    form_info_h: "Строим вместе",
+    form_info_p: "Мы небольшая команда, создающая что-то значимое. Если вы разработчик, партнёр или пользователь с отзывом — мы рады вас слышать.",
+    footer_copy: "© 2024 EduBridge. Все права защищены.",
+    footer_privacy: "Конфиденциальность",
+    footer_terms: "Условия",
+    alert_future: "Такая функция будет добавлена в будущем"
+  },
+  en: {
+    nav_problem: "Problem",
+    nav_solution: "Solution",
+    nav_how: "How it works",
+    nav_contact: "Contact",
+    nav_cta: "Start in Telegram",
+    hero_badge: "Now in MVP · Try it free on Telegram",
+    hero_h1: "Connecting Students with the <span>Right Teachers</span> and Resources",
+    hero_sub: "Learning today is scattered across dozens of platforms. Finding the right teacher or trusted resource shouldn't feel like a second job.",
+    hero_btn1: "Start in Telegram",
+    hero_btn2: "Try MVP →",
+    hero_note: "One platform · All your learning needs · No chaos",
+    stat1_num: "500+", stat1_label: "Active Students",
+    stat2_num: "120+", stat2_label: "Certified Teachers",
+    stat3_num: "4.9★", stat3_label: "Average Rating",
+    stat4_num: "95%", stat4_label: "Satisfaction Rate",
+    prob_label: "The Problem",
+    prob_title: "Learning is broken and scattered",
+    prob_desc: "Students struggle to find the right teachers and reliable materials. Everything is spread across different platforms — making learning inefficient and frustrating.",
+    prob1_h: "Hard to find teachers",
+    prob1_p: "No central place to discover qualified mentors who match your specific learning needs.",
+    prob2_h: "Scattered resources",
+    prob2_p: "Quality materials are spread across dozens of platforms — no curation, no trust signals.",
+    prob3_h: "Wasted time",
+    prob3_p: "Students spend more time searching than actually learning. That's backwards.",
+    sol_label: "Our Solution",
+    sol_title: "Everything in one place",
+    sol_desc: "EduBridge connects students with teachers and trusted learning resources in one structured flow.",
+    sol1_h: "Unified platform",
+    sol1_p: "Students and teachers connect seamlessly without switching apps.",
+    sol2_h: "Curated resources",
+    sol2_p: "Only trusted, vetted learning materials make it through.",
+    sol3_h: "Accessible anywhere",
+    sol3_p: "Start right now via our Telegram bot — no app install needed.",
+    how_label: "How it works",
+    how_title: "Four steps to smarter learning",
+    how_desc: "Simple, fast, and effective — from question to learning in minutes.",
+    step1_h: "Enter a topic",
+    step1_p: "Tell EduBridge what you want to learn — any subject, any level.",
+    step2_h: "Find a mentor",
+    step2_p: "EduBridge matches you with the right teacher for your goal.",
+    step3_h: "Get resources",
+    step3_p: "Receive curated, trusted materials alongside your mentor match.",
+    step4_h: "Start learning",
+    step4_p: "Everything in one simple flow — no tab juggling required.",
+    feat_label: "Features",
+    feat_title: "Built for how students actually learn",
+    feat1_h: "Instant teacher connection",
+    feat1_p: "Connect with available mentors in seconds, not days.",
+    feat2_h: "Trusted learning resources",
+    feat2_p: "Access a curated library of verified, high-quality materials.",
+    feat3_h: "Clean, simple interface",
+    feat3_p: "Distraction-free design so you focus on learning, not navigation.",
+    feat4_h: "Telegram bot MVP",
+    feat4_p: "Get started immediately — no downloads, no sign-up friction.",
+    feat5_h: "AI smart suggestions",
+    feat5_p: "Personalized recommendations based on your learning style.",
+    feat6_h: "Multi-language support",
+    feat6_p: "Designed for learners everywhere, regardless of language.",
+    cta_title: "Start learning smarter today",
+    cta_sub: "Join EduBridge and experience a better way to connect with teachers and resources — right inside Telegram.",
+    cta_btn: "Start in Telegram",
+    footer_tagline: "Connecting students with the right teachers and resources.",
+    footer_platform: "Platform",
+    footer_link_home: "Home",
+    footer_link_features: "Features",
+    footer_link_how: "How it works",
+    footer_link_pricing: "Pricing",
+    footer_company: "Company",
+    footer_link_about: "About us",
+    footer_link_blog: "Blog",
+    footer_link_careers: "Careers",
+    footer_link_press: "Press",
+    footer_contact_title: "Contact",
+    contact_form_title: "Send us a message",
+    contact_name_label: "Your name",
+    contact_name_ph: "e.g. Jasur Toshmatov",
+    contact_email_label: "Email",
+    contact_email_ph: "you@example.com",
+    contact_role_label: "I'm a...",
+    contact_role1: "Student looking to learn",
+    contact_role2: "Teacher / Mentor",
+    contact_role3: "Developer interested in contributing",
+    contact_role4: "Potential partner / investor",
+    contact_role5: "Just curious",
+    contact_msg_label: "Message",
+    contact_msg_ph: "Tell us what's on your mind...",
+    contact_send: "Send message →",
+    form_info_h: "Let's build together",
+    form_info_p: "We're a small team building something meaningful. If you're a developer, partner, or user with feedback — we'd love to hear from you.",
+    footer_copy: "© 2024 EduBridge. All rights reserved.",
+    footer_privacy: "Privacy",
+    footer_terms: "Terms",
+    alert_future: "This feature will be added in the future"
+  }
+};
+
+let currentLang = 'uz';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) {
+      el.innerHTML = t[key];
+    }
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+  });
+  document.documentElement.lang = lang;
+}
+function handleFutureClick(e) {
+  e.preventDefault();
+  showInfoToast(LANGS[currentLang].alert_future);
+}
+function showInfoToast(message) {
+  Toastify({
+    text: `
+      <div style="display: flex; align-items: center; gap: 12px; padding-right: 16px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+          <circle cx="12" cy="12" r="12" fill="#3B82F6"/>
+          <path d="M12 16V11" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="7.5" r="1.5" fill="white"/>
+        </svg>
+        <span style="color: #64748B; font-size: 15px; font-weight: 500; line-height: 1.4; font-family: 'Plus Jakarta Sans', sans-serif;">
+          ${message}
+        </span>
+      </div>
+    `,
+    duration: 3000,      // Vaqt millisekundlarda (CSS animatsiyasi bilan bir xil)
+    gravity: "top",      // "top" yoki "bottom"
+    position: "right",   // "left", "center" yoki "right"
+    close: true,         // X tugmasi
+    escapeMarkup: false, // HTML kodlarini o'qishi uchun muhim
+    className: "custom-toast-info" // CSS klassini bog'lash
+  }).showToast();
+}
+
+// Funksiyani chaqirish uchun misol:
+// showInfoToast("Tizimda yangilanishlar mavjud. Iltimos sahifani yangilang.");
+</script>
+
+<!-- NAV -->
+<nav>
+  
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#"><img src="./images/Edubridge-logo.jpg" width="150" height="auto" alt=""></a>
+      <ul class="nav-links">  
+        <li><a href="#how" data-i18n="nav_how">Qanday ishlaydi</a></li>
+        <li><a href="#footer-contact" data-i18n="nav_contact">Aloqa</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="uz" onclick="setLang('uz')">UZ</button>
+          <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+        </div>
+        <a class="nav-cta" href="https://t.me/ideabridge_bot" data-i18n="nav_cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Telegramda boshlash
+        </a>
+        <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#problem" onclick="closeMenu()" data-i18n="nav_problem">Muammo</a>
+  <a href="#solution" onclick="closeMenu()" data-i18n="nav_solution">Yechim</a>
+  <a href="#how" onclick="closeMenu()" data-i18n="nav_how">Qanday ishlaydi</a>
+  <a href="#footer-contact" onclick="closeMenu()" data-i18n="nav_contact">Aloqa</a>
+  <div class="mobile-lang">
+    <button class="lang-btn active" data-lang="uz" onclick="setLang('uz');updateMobileLang()">UZ</button>
+    <button class="lang-btn" data-lang="ru" onclick="setLang('ru');updateMobileLang()">RU</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en');updateMobileLang()">EN</button>
+  </div>
+  <a class="btn-primary btn-full" style="margin-top:16px" href="https://t.me/ideabridge_bot" data-i18n="nav_cta">Telegramda boshlash</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-badge">✨ <span data-i18n="hero_badge">MVP • Telegram orqali bepul sinab ko'ring</span></div>
+      <h1 data-i18n="hero_h1">O'quvchilarni <span>To'g'ri O'qituvchilar</span> va Resurslar bilan Bog'laymiz</h1>
+      <p class="hero-sub" data-i18n="hero_sub">Bugungi ta'lim o'nlab platformalarga tarqalgan. To'g'ri o'qituvchi yoki ishonchli resurs topish ikkinchi ish bo'lmasligi kerak.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="https://t.me/ideabridge_bot">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          <span data-i18n="hero_btn1">Telegramda boshlash</span>
+        </a>
+        <a class="btn-outline" href="https://t.me/ideabridge_bot" data-i18n="hero_btn2">MVP sinab ko'rish →</a>
+      </div>
+      <div class="hero-visual">
+        <div class="flow">
+          <div class="flow-node"><div class="fn-icon">🎓</div><p data-i18n="flow_student">O'quvchi</p></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node center-node"><div class="fn-icon">🌉</div><p>EduBridge</p></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="fn-icon">📚</div><p data-i18n="flow_resources">Resurslar</p></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="fn-icon">👨‍🏫</div><p data-i18n="flow_teachers">O'qituvchilar</p></div>
+        </div>
+        <p class="hero-note" data-i18n="hero_note">Bitta platforma · Barcha ta'lim ehtiyojlaringiz · Tartibsizliksiz</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="section-label" data-i18n="prob_label">Muammo</div>
+    <h2 class="section-title" data-i18n="prob_title">Ta'lim buzilgan va tarqoq</h2>
+    <p class="section-desc" data-i18n="prob_desc">O'quvchilar to'g'ri o'qituvchilar va ishonchli materiallarni topishda qiynaladi.</p>
+    <div class="problem-cards">
+      <div class="prob-card"><div class="pc-icon">🔍</div><h4 data-i18n="prob1_h">O'qituvchi topish qiyin</h4><p data-i18n="prob1_p">Sizning maxsus ta'lim ehtiyojlaringizga mos malakali murabbiylarni topish uchun markaziy joy yo'q.</p></div>
+      <div class="prob-card"><div class="pc-icon">📂</div><h4 data-i18n="prob2_h">Tarqoq resurslar</h4><p data-i18n="prob2_p">Sifatli materiallar o'nlab platformalarda tarqalgan — kuratsiya yo'q, ishonch signallari yo'q.</p></div>
+      <div class="prob-card"><div class="pc-icon">⏰</div><h4 data-i18n="prob3_h">Behuda sarf etilgan vaqt</h4><p data-i18n="prob3_p">O'quvchilar o'rganishdan ko'ra ko'proq vaqtni qidirishga sarflaydi. Bu noto'g'ri.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution" id="solution">
+  <div class="container">
+    <div class="sol-grid">
+      <div class="sol-left">
+        <div class="section-label" data-i18n="sol_label">Bizning Yechimimiz</div>
+        <h2 class="section-title" data-i18n="sol_title">Hamma narsa bir joyda</h2>
+        <p class="section-desc" data-i18n="sol_desc">EduBridge o'quvchilarni o'qituvchilar va ishonchli o'quv resurslari bilan bitta strukturalangan oqimda bog'laydi.</p>
+        <div class="sol-points">
+          <div class="sol-item"><div class="sol-dot">1</div><div class="sol-text"><h4 data-i18n="sol1_h">Yagona platforma</h4><p data-i18n="sol1_p">O'quvchilar va o'qituvchilar ilovalarni almashtirmasdan muammosiz bog'lanadi.</p></div></div>
+          <div class="sol-item"><div class="sol-dot">2</div><div class="sol-text"><h4 data-i18n="sol2_h">Tanlangan resurslar</h4><p data-i18n="sol2_p">Faqat ishonchli, tekshirilgan o'quv materiallari o'tadi.</p></div></div>
+          <div class="sol-item"><div class="sol-dot">3</div><div class="sol-text"><h4 data-i18n="sol3_h">Istalgan joydan foydalanish</h4><p data-i18n="sol3_p">Hoziroq Telegram botimiz orqali boshlang — ilova o'rnatish shart emas.</p></div></div>
+        </div>
+      </div>
+      <div class="sol-right">
+        <div class="mock-ui">
+          <div class="mock-top">
+            <div class="mock-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+            <span class="mock-title">EduBridge · Find a mentor</span>
+          </div>
+          <div class="mock-search"><span>🔍</span><span>Python for beginners...</span></div>
+          <div class="mock-card"><div class="mock-avatar" style="background:linear-gradient(135deg,#1B2D4F,#2563EB)">AK</div><div class="mock-card-text"><h5>Aliya Khasanova</h5><p>Python · Data Science · 4.9 ★</p><div class="mock-tag">Available now</div></div></div>
+          <div class="mock-card"><div class="mock-avatar" style="background:linear-gradient(135deg,#34d399,#059669)">MJ</div><div class="mock-card-text"><h5>Marcus Johansson</h5><p>Python · Backend · 4.8 ★</p><div class="mock-tag">Top rated</div></div></div>
+          <div style="text-align:center;margin-top:12px"><span style="font-size:12px;color:#aaa">+ 12 more mentors found</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-head">
+      <div class="section-label" data-i18n="how_label">Qanday ishlaydi</div>
+      <h2 class="section-title" data-i18n="how_title">Aqlliroq o'rganishga to'rt qadam</h2>
+      <p class="section-desc" data-i18n="how_desc">Oddiy, tez va samarali — savoldan daqiqalar ichida o'rganishga.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-icon">✍️</div><div class="step-num">1</div><h4 data-i18n="step1_h">Mavzu kiriting</h4><p data-i18n="step1_p">EduBridge-ga nima o'rganmoqchilgingizni ayting — istalgan fan, istalgan daraja.</p></div>
+      <div class="step"><div class="step-icon">🤝</div><div class="step-num">2</div><h4 data-i18n="step2_h">Murabbiy toping</h4><p data-i18n="step2_p">EduBridge sizni maqsadingiz uchun to'g'ri o'qituvchi bilan moslashtiradi.</p></div>
+      <div class="step"><div class="step-icon">📖</div><div class="step-num">3</div><h4 data-i18n="step3_h">Resurslar oling</h4><p data-i18n="step3_p">Murabbiy topilishi bilan birga tanlangan, ishonchli materiallar oling.</p></div>
+      <div class="step"><div class="step-icon">🚀</div><div class="step-num">4</div><h4 data-i18n="step4_h">O'rganishni boshlang</h4><p data-i18n="step4_p">Hamma narsa bitta oddiy oqimda — vkladkalarni almashtirishsiz.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="section-label" style="text-align:center" data-i18n="feat_label">Xususiyatlar</div>
+    <h2 class="section-title" style="text-align:center;margin-bottom:44px" data-i18n="feat_title">O'quvchilar qanday o'rganishini hisobga olib qurilgan</h2>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-icon" style="background:#DBEAFE">⚡</div><div><h4 data-i18n="feat1_h">Darhol o'qituvchi bilan aloqa</h4><p data-i18n="feat1_p">Kunlar emas, soniyalarda mavjud murabbiylar bilan bog'laning.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#D1FAE5">📚</div><div><h4 data-i18n="feat2_h">Ishonchli o'quv resurslari</h4><p data-i18n="feat2_p">Tekshirilgan, yuqori sifatli materiallarning tanlangan kutubxonasiga kiring.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#EDE9FE">✨</div><div><h4 data-i18n="feat3_h">Toza, oddiy interfeys</h4><p data-i18n="feat3_p">Chalg'itmasiz dizayn, shuning uchun navigatsiya emas, o'rganishga e'tibor qarating.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#E0F2FE"><svg width="22" height="22" viewBox="0 0 24 24" fill="#0ea5e9"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg></div><div><h4 data-i18n="feat4_h">Telegram bot MVP</h4><p data-i18n="feat4_p">Darhol boshlang — yuklab olish yo'q, ro'yxatdan o'tish to'siqlari yo'q.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#FCE7F3">🤖</div><div><h4 data-i18n="feat5_h">AI aqlli takliflar</h4><p data-i18n="feat5_p">O'rganish uslubingizga asoslangan shaxsiy tavsiyalar.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#FEF3C7">🌍</div><div><h4 data-i18n="feat6_h">Ko'p tilli qo'llab-quvvatlash</h4><p data-i18n="feat6_p">Istalgan tilda o'quvchilar uchun mo'ljallangan.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container" style="position:relative;z-index:1">
+    <h2 data-i18n="cta_title">Bugun aqlliroq o'rganishni boshlang</h2>
+    <p data-i18n="cta_sub">EduBridge-ga qo'shiling va o'qituvchilar va resurslar bilan bog'lanishning yangi usulini Telegram ichida his eting.</p>
+    <a class="btn-white" href="https://t.me/ideabridge_bot">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1B2D4F"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+      <span data-i18n="cta_btn">Telegramda boshlash</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer-contact">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <img src="./images/Edubridge-logo-dark.jpg" width="130" height="auto" alt="EduBridge Logo">
+          <div class="footer-social">
+            <a class="social-btn" href="https://t.me/S703SC" title="Telegram" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            </a>
+            <a class="social-btn" href="#" title="Email">✉️</a>
+            <a class="social-btn" href="https://t.me/ideabridge_bot" title="Bot">🤖</a>
+          </div>
+        </div>
+        <!-- Platform Links -->
+<div class="footer-col">
+  <h5 data-i18n="footer_platform">Platforma</h5>
+  <ul>
+    <li><a href="#" data-i18n="footer_link_home">Bosh sahifa</a></li>
+    <li><a href="#solution" onclick="handleFutureClick(event)" data-i18n="footer_link_features">Xususiyatlar</a></li>
+    <li><a href="#how"data-i18n="footer_link_how">Qanday ishlaydi</a></li>
+    <li><a href="#" onclick="handleFutureClick(event)" data-i18n="footer_link_pricing">Narxlar</a></li>
+  </ul>
+</div>
+
+<!-- Company Links -->
+<div class="footer-col">
+  <h5 data-i18n="footer_company">Kompaniya</h5>
+  <ul>
+    <li><a href="#" onclick="handleFutureClick(event)" data-i18n="footer_link_about">Biz haqimizda</a></li>
+    <li><a href="#" onclick="handleFutureClick(event)" data-i18n="footer_link_blog">Blog</a></li>
+    <li><a href="#" onclick="handleFutureClick(event)" data-i18n="footer_link_careers">Ish o'rinlari</a></li>
+    <li><a href="#" onclick="handleFutureClick(event)" data-i18n="footer_link_press">Matbuot</a></li>
+  </ul>
+</div>
+        <!-- Contact Links -->
+        <div class="footer-contact">
+          <h5 data-i18n="footer_contact_title">Aloqa</h5>
+          <a class="contact-item" href="https://t.me/S703SC" target="_blank">
+            <div class="contact-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg></div>
+            @S703SC
+          </a>
+          <a class="contact-item" href="https://t.me/Mirazim_MMM" target="_blank">
+            <div class="contact-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg></div>
+            @Mirazim_MMM
+          </a>
+          <a class="contact-item" href="#">
+            <div class="contact-icon">✉️</div>
+            edubridge@gmail.com
+          </a>
+          <a class="contact-item" href="https://t.me/ideabridge_bot" target="_blank">
+            <div class="contact-icon">👨‍💻</div>
+            <span data-i18n="footer_dev">Dasturchi sifatida qo'shiling</span>
+          </a>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+// Add missing translation keys
+LANGS.uz.flow_student = "O'quvchi";
+LANGS.uz.flow_resources = "Resurslar";
+LANGS.uz.flow_teachers = "O'qituvchilar";
+LANGS.uz.feat_soon = "Tez kunda";
+LANGS.uz.footer_dev = "Dasturchi sifatida qo'shiling";
+LANGS.uz.footer_partner = "Hamkor bo'ling";
+LANGS.ru.flow_student = "Студент";
+LANGS.ru.flow_resources = "Ресурсы";
+LANGS.ru.flow_teachers = "Учителя";
+LANGS.ru.feat_soon = "Скоро";
+LANGS.ru.footer_dev = "Присоединиться как разработчик";
+LANGS.ru.footer_partner = "Стать партнёром";
+LANGS.en.flow_student = "Student";
+LANGS.en.flow_resources = "Resources";
+LANGS.en.flow_teachers = "Teachers";
+LANGS.en.feat_soon = "Coming soon";
+LANGS.en.footer_dev = "Join as a developer";
+LANGS.en.footer_partner = "Become a partner";
+
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+function updateMobileLang() {
+  document.querySelectorAll('.mobile-menu .lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+  });
+}
+// Close menu on outside click
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.querySelector('.hamburger');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
+// Init language
+setLang('uz');
+</script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+</html>
